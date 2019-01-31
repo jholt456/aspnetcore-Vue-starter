@@ -17,9 +17,9 @@ module.exports = () => {
   return [{
     mode: (isDevBuild ? 'development' :'production'  ),
     stats: { modules: false },
-    entry: { 'main': './ClientApp/boot-app.js' },
+    entry: { 'main': './ClientApp/boot-app.ts' },
     resolve: {
-      extensions: ['.js', '.vue'],
+      extensions: ['.ts','.js', '.vue'],
       alias: isDevBuild ? {
         'vue$': 'vue/dist/vue',
         'components': path.resolve(__dirname, './ClientApp/components'),
@@ -41,6 +41,18 @@ module.exports = () => {
     module: {
       rules: [
         { test: /\.vue$/, include: /ClientApp/, use: 'vue-loader' },
+        {
+          test: /\.tsx?$/, exclude: /node_modules/,
+          use: [
+            {
+              loader: 'babel-loader'
+            },
+            {
+              loader: 'ts-loader',
+              options: { appendTsSuffixTo: [/\.vue$/], }
+            }
+          ]
+        },
         { test: /\.js$/, include: /ClientApp/, use: 'babel-loader' },
         { test: /\.css$/, use: isDevBuild ? ['style-loader', 'css-loader'] : [MiniCssExtractPlugin.loader, 'css-loader'] },
         { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' }

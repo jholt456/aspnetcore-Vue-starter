@@ -1,6 +1,6 @@
-var prerendering = require('aspnet-prerendering')
+import { createServerRenderer, RenderResult } from 'aspnet-prerendering';
 
-module.exports = prerendering.createServerRenderer(function (params) {
+export default createServerRenderer(function (params:{location:{path:string}; absoluteUrl:string}) {
   return new Promise(function (resolve, reject) {
     var result = '<h1>Loading...</h1>' +
             '<p>Current time in Node is: ' + new Date() + '</p>' +
